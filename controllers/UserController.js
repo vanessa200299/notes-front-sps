@@ -1,6 +1,7 @@
 //Controller for user
-//Get USer model
+//Get User and Note model
 const User = require('../models/User');
+const Note = require('../models/Note');
 
 //Find all Users.
 exports.findAll = async function (req, res, next) {
@@ -16,7 +17,7 @@ exports.findById = async function (req, res, next) {
             .json(user)
     } catch {
         res.status(404)
-            .json({ message: "Usuario no existe." })
+            .json({ message: "User not found." })
     }
 };
 
@@ -34,14 +35,14 @@ exports.create = async function (req, res, next) {
         res.status(200)
             .json(
                 {
-                    message: "Usuario creado correctamente."
+                    message: "User added."
                 }
             )
     } catch (err) {
         res.status(500)
             .json(
                 {
-                    message: "Error al crear usuario."
+                    message: "Can not add user."
                 }
             )
     }
@@ -50,18 +51,30 @@ exports.create = async function (req, res, next) {
 //Delete User.
 exports.delete = async function (req, res, next) {
     try {
-        await User.deleteOne({ _id: req.params.id })
-        res.status(200)
-            .json(
-                {
-                    message: "Usuario eliminado correctamente"
-                }
-            )
+        const notesUser = await Note.find()
+            .where('user')
+            .equals(req.params.id);
+
+        if (notesUser.length) {
+            res.status(400)
+                .json({
+                    message: `Cannot delete user has ${notesUser.length} associated notes`
+                })
+        } else {
+            await User.deleteOne({ _id: req.params.id })
+            res.status(200)
+                .json(
+                    {
+                        message: "User deleted"
+                    }
+                )
+        }
+
     } catch {
         res.status(404)
             .json(
                 {
-                    message: "Usuario no existe."
+                    message: "User not found."
                 }
             )
     }

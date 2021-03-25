@@ -17,7 +17,7 @@ exports.findById = async function (req, res, next) {
             .json(note)
     } catch {
         res.status(404)
-            .json({ message: "Nota no existe." })
+            .json({ message: "Note not found." })
     }
 };
 
@@ -38,14 +38,14 @@ exports.create = async function (req, res, next) {
         res.status(200)
             .json(
                 {
-                    message: "Nota creado correctamente."
+                    message: "Note added."
                 }
             )
     } catch (err) {
         res.status(500)
             .json(
                 {
-                    message: "Error al crear nota."
+                    message: "Can not add note."
                 }
             )
     }
@@ -65,12 +65,12 @@ exports.edit = async function (req, res, next) {
         res.status(200)
             .json(
                 {
-                    message: "Nota actualizada correctamente"
+                    message: "Note updated"
                 }
             )
     } catch (err) {
         res.status(404)
-        res.send({ error: "Note doesn't exist!" })
+        res.send({ error: "Note doesn't exist." })
     }
 };
 
@@ -81,14 +81,14 @@ exports.delete = async function (req, res, next) {
         res.status(200)
             .json(
                 {
-                    message: "Nota eliminado correctamente"
+                    message: "Note deleted."
                 }
             )
     } catch {
         res.status(404)
             .json(
                 {
-                    message: "Nota no existe."
+                    message: "Note not found."
                 }
             )
     }
