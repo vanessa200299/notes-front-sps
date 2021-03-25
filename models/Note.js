@@ -7,7 +7,6 @@ const noteSchema = new Schema({
     title: { type: String, require: true },
     content: { type: String, require: true },
     created: { type: Date, require: true },
-    updated: { type: Date, require: false },
 });
 
 module.exports = mongoose.model('Note', noteSchema);

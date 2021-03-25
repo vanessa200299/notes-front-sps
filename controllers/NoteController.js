@@ -6,7 +6,12 @@ const Note = require('../models/Note');
 exports.findAll = async function (req, res, next) {
 
     res.status(200)
-        .json(await Note.find().populate('user'));
+        .json(
+            await Note.find()
+            .sort({_id: 'desc'})
+            .populate('user')
+            
+            );
 };
 
 //Find Note by _id.
@@ -28,7 +33,8 @@ exports.create = async function (req, res, next) {
             user: req.body.user,
             title: req.body.title,
             content: req.body.content,
-            created: Date.now()
+            created: req.body.created,
+            addes: Date.now()
         }
     );
 
@@ -59,7 +65,6 @@ exports.edit = async function (req, res, next) {
         note.title = req.body.title;
         note.content = req.body.content;
         note.user = req.body.user;
-        note.updated = Date.now();
          
         await note.save()
         res.status(200)
